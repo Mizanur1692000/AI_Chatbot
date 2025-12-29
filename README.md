@@ -82,10 +82,10 @@ python manage.py migrate
 Since the project uses Django Channels, you need to run it with an ASGI server like Daphne.
 
 ```bash
-daphne -p 8001 ai_chatbot.asgi:application
+daphne -p 8000 ai_chatbot.asgi:application
 ```
 
-The application will be available at `http://localhost:8001`.
+The application will be available at `http://localhost:8000`.
 
 ## API and WebSocket Endpoints
 
