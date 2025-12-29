@@ -79,7 +79,9 @@ python manage.py migrate
 
 ### 7. Run the Development Server
 
-Since the project uses Django Channels, you need to run it with an ASGI server like Daphne.
+**Important**: This project uses Django Channels for real-time features and must be run with an ASGI server like Daphne. Do **not** use `python manage.py runserver`.
+
+Use the following command to start the server on port 8000:
 
 ```bash
 daphne -p 8000 ai_chatbot.asgi:application
@@ -89,11 +91,13 @@ The application will be available at `http://localhost:8000`.
 
 ## API and WebSocket Endpoints
 
+All API endpoints are prefixed with `/api/`.
+
 ### REST API
 
 #### Create Session
 
--   **Endpoint**: `POST /api/set_email/`
+-   **Endpoint**: `POST http://localhost:8000/api/set_email/`
 -   **Description**: Creates a new chat session associated with an email.
 -   **Body**:
     ```json
@@ -108,11 +112,23 @@ The application will be available at `http://localhost:8000`.
     }
     ```
 
+#### Chat via HTTP
+
+-   **Endpoint**: `POST http://localhost:8000/api/chat/`
+-   **Description**: Send a message to the chatbot over HTTP.
+-   **Body**:
+    ```json
+    {
+        "message": "Hello, how are you?",
+        "session_id": "your_session_id"
+    }
+    ```
+
 ### WebSocket for Real-time Chat
 
-Once you have a `session_id`, you can connect to the chat consumer via a WebSocket.
+Once you have a `session_id`, you can connect to the chat consumer via a WebSocket for real-time communication.
 
--   **URL**: `ws://localhost:8001/ws/chat/<room_name>/`
+-   **URL**: `ws://localhost:8000/ws/chat/<room_name>/`
     -   Replace `<room_name>` with a unique identifier for the chat room. You can use the `session_id` for a private chat.
 -   **Sending Messages**: Send a JSON object with a `message` key.
     ```json
