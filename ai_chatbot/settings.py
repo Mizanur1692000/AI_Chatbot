@@ -40,7 +40,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'chatbot',
-    'channels',
     'rest_framework',  
 ]
 
@@ -80,8 +78,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ai_chatbot.wsgi.application'
-ASGI_APPLICATION = 'ai_chatbot.asgi.application'
+# WSGI_APPLICATION = 'ai_chatbot.wsgi.application'
+# ASGI_APPLICATION = 'ai_chatbot.asgi.application'
 
 
 # Database

@@ -1,5 +1,7 @@
 from django.urls import path
+from .views import ChatView, SetEmailView
 
 urlpatterns = [
-    # No views are needed for the WebSocket-based chatbot
+    path('set_email/', SetEmailView.as_view(), name='set_email'),
+    path('chat/', ChatView.as_view(), name='chat'),
 ]
