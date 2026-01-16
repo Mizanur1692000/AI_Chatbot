@@ -1,8 +1,5 @@
 django
-djangorestframework
 langchain
 langchain-google-genai
 python-dotenv
 langchain-community
-channels
-daphne
