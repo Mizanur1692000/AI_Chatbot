@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+
 load_dotenv()  # Load environment variables from .env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# Load from .env; falls back to a dev key if missing
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-your-secret-key-here')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'chatbot',
 ]
 
@@ -71,8 +74,8 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'ai_chatbot.wsgi.application'
-# ASGI_APPLICATION = 'ai_chatbot.asgi.application'
+WSGI_APPLICATION = 'ai_chatbot.wsgi.application'
+ASGI_APPLICATION = 'ai_chatbot.asgi.application'
 
 
 # Database
@@ -129,11 +132,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Gemini API Key from .env
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-
-# Caching
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
-    }
-}

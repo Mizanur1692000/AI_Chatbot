@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import ChatView, SetEmailView
+from .views import ChatView, EmailView
 
 urlpatterns = [
-    path('set_email/', SetEmailView.as_view(), name='set_email'),
+    path('set_email/', EmailView.as_view(), name='set_email'),
     path('chat/', ChatView.as_view(), name='chat'),
 ]

@@ -13,7 +13,7 @@ venv.bak/
 *.db
 db.sqlite3
 
-# Environment variables
+# Environment variables (keep all env files ignored)
 .env
 .env.local
 .env.prod
