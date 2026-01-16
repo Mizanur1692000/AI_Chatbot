@@ -20,7 +20,7 @@ SYSTEM_PROMPT = (
 )
 
 # History settings
-HISTORY_MAX_TURNS = 10  # keep last 10 user+assistant exchanges
+HISTORY_MAX_TURNS = 20  # keep last 20 user+assistant exchanges
 
 # Module-level LLM and chain for reuse
 _LLM = ChatGoogleGenerativeAI(
