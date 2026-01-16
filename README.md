@@ -1,178 +1,77 @@
-# Production-Ready AI Chatbot with Django and Channels
+# AI Chatbot
 
-[![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
-[![Django Version](https://img.shields.io/badge/django-4.x-green.svg)](https://www.djangoproject.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-A scalable, production-ready, session-based AI chatbot built with Django, Django REST Framework, and Django Channels. It uses Google Gemini for AI-powered conversations and supports real-time, asynchronous communication via WebSockets.
+This is a real-time AI-powered chatbot built with Django Channels. The backend is a Django application that uses WebSockets to communicate with the frontend, and the AI logic is handled by a separate utility module.
 
 ## Features
 
--   **Real-time & Asynchronous**: Built with Django Channels for scalable, low-latency WebSocket communication.
--   **AI-Powered Conversations**: Integrates with Google Gemini via LangChain for intelligent and context-aware responses.
--   **RESTful API**: Provides a clean API for session management and communication.
--   **Session Management**: Uses email-based session handling to maintain distinct conversation histories.
--   **Performance Optimized**: Implements caching to reduce latency and minimize redundant AI API calls.
--   **Error Handling**: Gracefully handles potential issues with external AI services.
--   **Production-Ready**: Securely configured for deployment with environment variables for sensitive data.
+-   Real-time, two-way communication using Django Channels.
+-   AI-powered responses.
+-   Conversation history is stored in a database.
+-   Scalable project structure.
 
-## Architecture Overview
+## Project Structure
 
-This project uses a standard Django setup for the core application logic and REST API. For real-time chat functionality, it leverages **Django Channels** to handle WebSocket connections.
+-   `ai_chatbot/`: The main Django project folder.
+    -   `settings.py`: Django project settings.
+    -   `urls.py`: Main URL configuration.
+    -   `asgi.py`: ASGI configuration for Django Channels.
+-   `chatbot/`: The chatbot Django app.
+    -   `consumers.py`: Handles WebSocket connections and chat logic.
+    -   `ai_utils.py`: Contains the AI logic for generating responses.
+    -   `models.py`: Defines the database model for storing chat messages.
+    -   `routing.py`: URL routing for WebSocket connections.
+    -   `urls.py`: URL configuration for the chatbot app.
+-   `db.sqlite3`: The SQLite database file.
+-   `manage.py`: Django's command-line utility.
+-   `requirements.txt`: A list of Python packages required for this project.
 
-1.  **Web Server (Nginx)**: Handles incoming HTTP requests, serves static files, and acts as a reverse proxy for the application server.
-2.  **Application Server (Daphne)**: An ASGI server that runs the Django application, handling both HTTP and WebSocket traffic.
-3.  **Django Backend**: Manages API endpoints, session logic, and database interactions.
-4.  **Channels & Consumers**: The `chatbot` app contains a `ChatConsumer` that manages individual WebSocket connections, receives messages, interacts with the AI service, and broadcasts responses.
-5.  **Cache**: An in-memory cache is used to store results from the AI service, improving performance for repeated queries.
+## Setup and Installation
 
-## Tech Stack
-
--   **Backend**: Django, Django REST Framework, Django Channels
--   **Application Server**: Daphne
--   **AI**: Google Gemini, LangChain
--   **Database**: SQLite (development), PostgreSQL (recommended for production)
--   **Real-time Communication**: WebSockets
-
-## Local Development Setup
-
-### 1. Prerequisites
-
--   Python 3.9+
--   `pip` and `venv`
-
-### 2. Clone the Repository
-
-```bash
-git clone <your-repository-url>
-cd ai_chatbot
-```
-
-### 3. Create a Virtual Environment
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-```
-
-### 4. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 5. Set Up Environment Variables
-
-Create a `.env` file in the project root directory. This file will store your sensitive credentials.
-
-```
-# .env
-SECRET_KEY='your-super-secret-django-key'
-GEMINI_API_KEY='your-google-gemini-api-key'
-```
-
-### 6. Run Database Migrations
-
-```bash
-python manage.py migrate
-```
-
-### 7. Run the Development Server
-
-**Important**: This project uses Django Channels for real-time features and must be run with an ASGI server like Daphne. Do **not** use `python manage.py runserver`.
-
-Use the following command to start the server on port 8000:
-
-```bash
-daphne -p 8000 ai_chatbot.asgi:application
-```
-
-The application will be available at `http://localhost:8000`.
-
-## API and WebSocket Endpoints
-
-All API endpoints are prefixed with `/api/`.
-
-### REST API
-
-#### Create Session
-
--   **Endpoint**: `POST http://localhost:8000/api/set_email/`
--   **Description**: Creates a new chat session associated with an email.
--   **Body**:
-    ```json
-    {
-      "email": "user@example.com"
-    }
-    ```
--   **Response**:
-    ```json
-    {
-      "session_id": "your_session_id"
-    }
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/Mizanur1692000/AI_Chatbot
     ```
 
-#### Chat via HTTP
-
--   **Endpoint**: `POST http://localhost:8000/api/chat/`
--   **Description**: Send a message to the chatbot over HTTP.
--   **Body**:
-    ```json
-    {
-        "message": "Hello, how are you?",
-        "session_id": "your_session_id"
-    }
+2.  **Create a virtual environment and activate it:**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
     ```
 
-### WebSocket for Real-time Chat
-
-Once you have a `session_id`, you can connect to the chat consumer via a WebSocket for real-time communication.
-
--   **URL**: `ws://localhost:8000/ws/chat/<room_name>/`
-    -   Replace `<room_name>` with a unique identifier for the chat room. You can use the `session_id` for a private chat.
--   **Sending Messages**: Send a JSON object with a `message` key.
-    ```json
-    {
-      "message": "Hello, how are you?"
-    }
-    ```
--   **Receiving Messages**: The server will respond with a JSON object containing the AI's response.
-    ```json
-    {
-      "message": "AI response to: Hello, how are you?"
-    }
+3.  **Install the dependencies:**
+    ```bash
+    pip install -r requirements.txt
     ```
 
-## Running Tests
+4.  **Run database migrations:**
+    ```bash
+    python manage.py migrate
+    ```
 
-To run the test suite, execute the following command:
+## Running the Application
 
-```bash
-python manage.py test
-```
+1.  **Start the Django development server:**
+    ```bash
+    python manage.py runserver
+    ```
 
-## Deployment
+2.  **Open your web browser** and navigate to `http://127.0.0.1:8000/`. You will need to create a simple frontend to interact with the chatbot.
 
-For a production environment, it is recommended to use:
+## How It Works
 
--   **Database**: PostgreSQL or another robust database.
--   **Web Server**: Nginx to act as a reverse proxy and serve static files.
--   **Application Server**: Gunicorn for managing Daphne workers.
--   **Process Manager**: `systemd` or `supervisor` to manage the Gunicorn process.
+### Backend (Django Channels)
 
-Remember to set `DEBUG = False` in `settings.py` for production.
+The backend uses Django Channels to handle WebSocket connections. When a client connects to the `/ws/chat/` endpoint, the `ChatConsumer` in `chatbot/consumers.py` is instantiated.
 
-## Contributing
+-   When a message is received from the client, the `receive` method is called.
+-   The message is passed to the AI utility in `chatbot/ai_utils.py` to generate a response.
+-   The user's message and the bot's response are saved to the database.
+-   The bot's response is sent back to the client over the WebSocket.
 
-Contributions are welcome! Please feel free to submit a pull request.
+### Frontend (WebSocket Client)
 
-1.  Fork the repository.
-2.  Create a new branch (`git checkout -b feature/YourFeature`).
-3.  Make your changes.
-4.  Commit your changes (`git commit -m 'Add some feature'`).
-5.  Push to the branch (`git push origin feature/YourFeature`).
-6.  Open a pull request.
+You will need to create a frontend with JavaScript to connect to the WebSocket. The frontend should:
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+1.  Establish a WebSocket connection to `ws://127.0.0.1:8000/ws/chat/`.
+2.  Send messages to the server in JSON format (e.g., `{"message": "Hello"}`).
+3.  Listen for messages from the server and display them in the chat interface.
