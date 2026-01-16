@@ -75,4 +75,3 @@ class ChatView(View):
             return JsonResponse({'response': bot_response})
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
-

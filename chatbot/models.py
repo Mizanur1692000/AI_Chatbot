@@ -12,4 +12,3 @@ class ChatMessage(models.Model):
 
     def __str__(self):
         return f"User: {self.user_message[:50]}"
-
