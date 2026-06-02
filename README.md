@@ -30,7 +30,7 @@ python -m venv .venv
 pip install -r requirements.txt
 
 # Add your Gemini API key to .env
-echo GEMINI_API_KEY=your_key_here > .env
+echo DEEPSEEK_API_KEY=your_key_here > .env
 
 python manage.py migrate
 python manage.py runserver
@@ -47,5 +47,5 @@ curl -X POST http://127.0.0.1:8000/api/chat/ -H "Content-Type: application/json"
 
 ## Notes
 
-- Ensure `.env` contains `GEMINI_API_KEY`.
+- Ensure `.env` contains `DEEPSEEK_API_KEY`.
 - Authentication is disabled on these endpoints for simplicity; email + `session_id` gates access.
